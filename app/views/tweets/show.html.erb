@@ -1,0 +1,67 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @tweet.description %>
+</p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @tweet.created_at %>
+</p>
+
+<p>
+  <strong>Updated at:</strong>
+  <%= @tweet.updated_at %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @tweet.user_id %>
+</p>
+
+<h2>Comments</h2>
+<% if @tweet && @tweet.comments %>
+  <% @tweet.comments.each do |comment| %>
+    <p>
+      <strong>Commenter:</strong>
+      <%= comment.user.email %>
+    </p>
+
+    <p>
+      <strong>Title:</strong>
+      <%= comment.title %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= comment.description %>
+    </p>
+  <% end %>
+<% end %>
+
+<% if user_signed_in? %>
+
+  <h2>Add a comment:</h2>
+  <%= form_with model: [ @tweet, @tweet.comments.build ] do |form| %>
+    <p>
+      <%= form.label :commenter %><br>
+      <%= form.text_field :user_id %>
+    </p>
+    <p>
+      <%= form.label :title %><br>
+      <%= form.text_area :title %>
+    </p>
+    <p>
+      <%= form.label :description %><br>
+      <%= form.text_area :description %>
+    </p>
+    <p>
+      <%= form.submit %>
+    </p>
+  <% end %>
+  <%if current_user && current_user.id == @tweet.user_id%>
+    <%= link_to 'Edit', edit_tweet_path(@tweet) %> |
+  <% end %>
+<% end %>
+<%= link_to 'Back', tweets_path %>
